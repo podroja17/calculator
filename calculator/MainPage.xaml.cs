@@ -8,7 +8,7 @@ namespace calculator
 {
     public partial class MainPage : ContentPage
     {
-        List<String> operations = new List<string>() { "÷", "×", "-", "+" };
+        List<String> excluded = new List<string>() { "÷", "×", "-", "+", "." };
 
         public MainPage()
         {
@@ -41,7 +41,7 @@ namespace calculator
 
         void UpdateDisplay(string character)
         {
-            if (display.Text == "0" && character != ".")
+            if (display.Text == "0" && !excluded.Contains(character))
             {
                 display.Text = character;
             } else {
@@ -55,7 +55,7 @@ namespace calculator
             DataTable dt = new DataTable();
             try
             {
-                display.Text = dt.Compute(display.Text.Replace('÷', '*'), "").ToString();
+                display.Text = dt.Compute(display.Text.Replace('÷', '/').Replace('×', '*'), "").ToString();
             } catch (Exception e)
             {
                 DisplayAlert("OOF", "Velký špatný" , "Odbouchnout");
